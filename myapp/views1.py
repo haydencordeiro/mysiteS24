@@ -19,3 +19,12 @@ def about(request):
     response.write('<p> This is an eBook APP. </p>')
     return response
 
+def details(request,book_id):
+    book = Book.objects.get(pk=book_id)
+    response = HttpResponse()
+    para = '<p>' + str(book.id) + ': ' + str(book.title.upper()) + ': $' + str(book.price) + ': ' + str(
+        book.publisher.name) + '</p>'
+    response.write(para)
+    return response
+
+
