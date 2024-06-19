@@ -1,0 +1,18 @@
+.hbar1 {
+    display: inline;
+    margin: 15px;
+}
+body {
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333333; /* Default text color */
+    font-size: 16px; /* Default font size */
+    font-family: Arial, sans-serif; /* Default font family */
+}
+
+h1 {
+    color: #ff6347; /* Tomato color */
+    font-size: 2em; /* Double the default font size */
+    font-style: italic; /* Italic font style */
+    text-align: center; /* Center the text */
+    position: relative; /* Positioning context for absolute positioning */
+}

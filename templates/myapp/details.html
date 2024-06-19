@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>eBook App</title>
-</head>
-<body>
+{% extends 'myapp/base.html' %}
+
+{% block title %}
+    Book Details
+{% endblock %}
+
+{% block body_block %}
     <h1> Details page </h1>
     {% if book and book.title %}
         <h2>Book Information</h2>
@@ -27,8 +27,5 @@
     {% else %}
         <strong>There are no available books with this id!</strong>
     {% endif %}
-    <p><a href="{% url 'myapp:index' %}">Home page</a></p>
-<p><a href="{% url 'myapp:about' %}">About page</a></p>
-</body>
+{% endblock %}
 
-</html>
