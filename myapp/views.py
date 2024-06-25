@@ -16,7 +16,8 @@ def details(request, book_id):
     return render(request, 'myapp/details.html', {'book': book})
 
 def about(request):
-    return render(request, 'myapp/about.html')
+    booklist = Book.objects.all()
+    return render(request, 'myapp/about.html', {'booklist': booklist})
 
 def getFeedback(request):
     if request.method == 'POST':

@@ -16,3 +16,7 @@ h1 {
     text-align: center; /* Center the text */
     position: relative; /* Positioning context for absolute positioning */
 }
+
+.book-price {
+    color: green;
+}
