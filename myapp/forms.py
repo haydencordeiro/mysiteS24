@@ -5,4 +5,4 @@ class FeedbackForm(forms.Form):
         ('B', 'Borrow'),
         ('P', 'Purchase'),
     ]
-    feedback =   forms.ChoiceField(choices = FEEDBACK_CHOICES)
+    feedback = forms.ChoiceField(choices = FEEDBACK_CHOICES)
