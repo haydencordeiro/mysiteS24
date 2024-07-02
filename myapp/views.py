@@ -85,6 +85,7 @@ def place_order(request):
             member = order.member
             type = order.order_type
             order.save()
+            order.books.set(books)
             if type == 1:
                 for b in order.books.all():
                     member.borrowed_books.add(b)
@@ -95,4 +96,13 @@ def place_order(request):
     else:
         form = OrderForm()
         return render(request, 'myapp/placeorder.html', {'form':form})
+
+def review_view(request):
+    form = ReviewForm()
+    if request.method == "POST":
+        pass
+    else:
+        pass
+    return render(request, 'myapp/review.html', {'form': form})
+
 
