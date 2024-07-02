@@ -25,6 +25,9 @@ class Book(models.Model):
     publisher = models.ForeignKey(Publisher, related_name='books', on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return self.title + " " + self.category + " " + self.get_category_display()
+
 # Lab4
 class Member(User):
     STATUS_CHOICES = [
