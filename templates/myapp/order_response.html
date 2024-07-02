@@ -1,0 +1,23 @@
+{% extends 'myapp/base.html' %}
+{% block body_block %}
+    <h1> Details page </h1>
+    {% if books%}
+        <h2>Order Response</h2>
+        <table>
+        <tbody>
+        <tr>
+            <td><h2>Book Name</h2></td>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+    </table>
+
+    {% else %}
+        <strong>There are no available books with this id!</strong>
+    {% endif %}
+{% endblock %}

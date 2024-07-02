@@ -10,4 +10,5 @@ urlpatterns = [
     path(r'about/', views.about, name='about'),
     path('feedback/', views.getFeedback, name='feedback1'),
     path('findbooks/', views.findbooks, name='findbooks'),
+    path('place_order', views.place_order, name='place_order'),
 ]

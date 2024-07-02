@@ -5,8 +5,7 @@ from django.shortcuts import render
 
 from myapp.models import Book
 from django.http import HttpResponse
-from .forms import FeedbackForm
-from .forms import SearchForm
+from .forms import *
 from .models import Book
 
 
@@ -75,3 +74,25 @@ def findbooks(request):
         form = SearchForm()  # Create a blank form
         # form.fields['category'].choices = categories  # Set choices dynamically
         return render(request, 'myapp/findbooks.html', {'form': form})
+
+
+def place_order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            books = form.cleaned_data['books']
+            order = form.save(commit=False)
+            member = order.member
+            type = order.order_type
+            order.save()
+            if type == 1:
+                for b in order.books.all():
+                    member.borrowed_books.add(b)
+            return render(request, 'myapp/order_response.html', {'books': books, 'order':order})
+        else:
+            return render(request, 'myapp/placeorder.html', {'form':form})
+
+    else:
+        form = OrderForm()
+        return render(request, 'myapp/placeorder.html', {'form':form})
+

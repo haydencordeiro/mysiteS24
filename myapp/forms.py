@@ -1,5 +1,6 @@
 from django import forms
-
+from django.forms.widgets import RadioSelect
+from .models import *
 
 class FeedbackForm(forms.Form):
     FEEDBACK_CHOICES = [
@@ -7,8 +8,7 @@ class FeedbackForm(forms.Form):
         ('P', 'Purchase'),
     ]
     feedback = forms.ChoiceField(choices = FEEDBACK_CHOICES)
-from django.forms.widgets import RadioSelect
-from .models import Book
+
 class SearchForm(forms.Form):
     name = forms.CharField(required=False, label='Your Name')
     category = forms.ChoiceField(
@@ -19,3 +19,10 @@ class SearchForm(forms.Form):
     )
     max_price = forms.IntegerField(label='Maximum Price', min_value=0)
 
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['books', 'member', 'order_type']
+        widgets = {'books': forms.CheckboxSelectMultiple(), 'order_type':forms.RadioSelect}
+        labels = {'member': u'Member name', }
