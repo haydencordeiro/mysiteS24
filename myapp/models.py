@@ -24,6 +24,10 @@ class Book(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     publisher = models.ForeignKey(Publisher, related_name='books', on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
+    num_pages = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.title + " " + self.category + " " + self.get_category_display()
 
 # Lab4
 class Member(User):
@@ -50,3 +54,13 @@ class Order(models.Model):
     member = models.ForeignKey(Member, related_name='orders', on_delete=models.CASCADE)
     order_type = models.IntegerField(choices=ORDER_VALUE_CHOICES, default=1)
     order_date = models.DateField(default=timezone.now)
+
+class Review(models.Model):
+    reviewer = models.EmailField()
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField()
+    comments = models.TextField()
+    date = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return self.comments
