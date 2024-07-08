@@ -2,24 +2,27 @@
 {% load static %}
 
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="{% static 'myapp/style1.css' %}" />
-        <title>eBook APP - {% block title %}Welcome!{% endblock %}</title>
-    </head>
 
-    <body>
-        <div>
-            <h1>{% block myhdg %}Hello User {% endblock %}</h1>
-            {% block body_block %}*** {% endblock %}
-        </div>
-        <hr />
-        <div>
-            <ul>
-                <li class="hbar1"><a href="/myapp/about/">Find out about this site</a></li>
-                <li class="hbar1"><a href = "{% url 'myapp:index' %}">Click here to return to main page</a><br/></li>
-                <li class="hbar1"><a href = "{% url 'myapp:place_order' %}">Click here to return to place order</a><br/></li>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'myapp/style1.css' %}" />
+    <title>eBook APP - {% block title %}Welcome!{% endblock %}</title>
+</head>
 
-            </ul>
-        </div>
-    </body>
+<body>
+    <div>
+        <h1>{% block myhdg %}Hello User {% endblock %}</h1>
+        {% block body_block %}*** {% endblock %}
+    </div>
+    <hr />
+    <div>
+        <ul>
+            <li class="hbar1"><a href="/myapp/about/">Find out about this site</a></li>
+            <li class="hbar1"><a href="{% url 'myapp:index' %}">Click here to return to main page</a><br /></li>
+            <li class="hbar1"><a href="/myapp/findbooks/">Find Books</a></li>
+            <li class="hbar1"><a href="{% url 'myapp:place_order' %}">Click here place order</a><br /></li>
+
+        </ul>
+    </div>
+</body>
+
 </html>
