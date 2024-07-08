@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from myapp.models import Book
 from django.http import HttpResponse
@@ -25,19 +25,21 @@ def getFeedback(request):
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():
-            feedback = form.cleaned_data['feedback']
-            if feedback == 'B':
-                choice = ' to borrow books.'
-            elif feedback == 'P':
-                choice = ' to purchase books.'
-            else: choice = ' None.'
-            return render(request, 'myapp/fb_results.html', {'choice':choice})
+            feedback_choices = form.cleaned_data['feedback']
+            choices_text = []
+            for choice in feedback_choices:
+                if choice == 'B':
+                    choices_text.append(' to borrow books.')
+                elif choice == 'P':
+                    choices_text.append(' to purchase books.')
+                else:
+                    choices_text.append(' None.')
+            return render(request, 'myapp/fb_results.html', {'choices_text': choices_text})
         else:
             return HttpResponse('Invalid data')
     else:
         form = FeedbackForm()
-        return render(request, 'myapp/feedback.html', {'form':form})
-
+        return render(request, 'myapp/feedback.html', {'form': form})
 
 def get_category_name(category_id):
     for id, name in Book.CATEGORY_CHOICES:
@@ -96,3 +98,20 @@ def place_order(request):
         form = OrderForm()
         return render(request, 'myapp/placeorder.html', {'form':form})
 
+
+def review(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            rating = form.cleaned_data['rating']
+            if 1 <= rating <= 5:
+                review = form.save()
+                book = review.book
+                book.num_reviews = book.num_reviews + 1
+                book.save()
+                return redirect('myapp:index')
+            else:
+                form.add_error('rating', 'You must enter a rating between 1 and 5!')
+    else:
+        form = ReviewForm()
+    return render(request, 'myapp/review.html', {'form': form})

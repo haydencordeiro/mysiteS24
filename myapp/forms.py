@@ -7,8 +7,10 @@ class FeedbackForm(forms.Form):
         ('B', 'Borrow'),
         ('P', 'Purchase'),
     ]
-    feedback = forms.ChoiceField(choices = FEEDBACK_CHOICES)
-
+    feedback = forms.MultipleChoiceField(
+        choices=FEEDBACK_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+    )
 class SearchForm(forms.Form):
     name = forms.CharField(required=False, label='Your Name')
     category = forms.ChoiceField(
@@ -26,3 +28,15 @@ class OrderForm(forms.ModelForm):
         fields = ['books', 'member', 'order_type']
         widgets = {'books': forms.CheckboxSelectMultiple(), 'order_type':forms.RadioSelect}
         labels = {'member': u'Member name', }
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['reviewer', 'book', 'rating', 'comments']
+        widgets = {
+            'book': forms.RadioSelect(),
+        }
+        labels = {
+            'reviewer': 'Please enter a valid email',
+            'rating': 'Rating: An integer between 1 (worst) and 5 (best)',
+        }
