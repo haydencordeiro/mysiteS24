@@ -120,7 +120,7 @@ def place_order(request):
         return render(request, "myapp/placeorder.html", {"form": form})
 
 
-def review(request):
+def review_view(request):
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
