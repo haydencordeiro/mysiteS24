@@ -41,6 +41,7 @@ def getFeedback(request):
         form = FeedbackForm()
         return render(request, 'myapp/feedback.html', {'form': form})
 
+
 def get_category_name(category_id):
     for id, name in Book.CATEGORY_CHOICES:
         if id == category_id:
@@ -87,6 +88,7 @@ def place_order(request):
             member = order.member
             type = order.order_type
             order.save()
+            order.books.set(books)
             if type == 1:
                 for b in order.books.all():
                     member.borrowed_books.add(b)
