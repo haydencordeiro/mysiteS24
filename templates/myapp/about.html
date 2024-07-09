@@ -1,21 +1,11 @@
 {% extends 'myapp/base.html' %}
 
 {% block title %}
-    eBook APP About page
+eBook APP About page
 {% endblock %}
 
 {% block body_block %}
-    <p>This is an ebook app.</p>
+<p>This is an ebook app.</p>
 
-    {% if booklist %}
-        <h2>List of Books</h2>
-        <ol>
-            {% for book  in booklist %}
-                <li > <a  class="book-price" href="{% url 'myapp:details' book_id=book.id %}" > {{book.price}} </a> </li>
-            {% endfor %}
-        </ol>
-    {% else %}
-        <strong>There are no available books!</strong>
-    {% endif %}
 
 {% endblock %}

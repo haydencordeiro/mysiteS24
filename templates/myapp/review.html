@@ -1,7 +1,7 @@
 {% extends 'myapp/base.html' %}
 
 {% block body_block %}
-<form action="{% url 'myapp:review_form' %}" method="POST">
+<form action="{% url 'myapp:review' %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" name="submit" value="Submit" />
