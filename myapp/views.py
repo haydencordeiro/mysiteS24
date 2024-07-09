@@ -41,7 +41,6 @@ def getFeedback(request):
         form = FeedbackForm()
         return render(request, 'myapp/feedback.html', {'form': form})
 
-
 def get_category_name(category_id):
     for id, name in Book.CATEGORY_CHOICES:
         if id == category_id:
