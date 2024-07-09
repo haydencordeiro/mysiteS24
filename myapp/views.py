@@ -10,11 +10,19 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
+import random
 
 
 def index(request):
+    last_login = request.session.get("last_login")
+    if last_login:
+        message = f"Your last login was at {last_login}"
+    else:
+        message = "Your last login was more than one hour ago"
     booklist = Book.objects.all().order_by("id")[:10]
-    return render(request, "myapp/index.html", {"booklist": booklist})
+    return render(
+        request, "myapp/index.html", {"booklist": booklist, "message": message}
+    )
 
 
 def details(request, book_id):
@@ -23,8 +31,15 @@ def details(request, book_id):
 
 
 def about(request):
-    booklist = Book.objects.all()
-    return render(request, "myapp/about.html", {"booklist": booklist})
+    lucky_num = request.COOKIES.get("lucky_num")
+    if lucky_num:
+        mynum = lucky_num
+    else:
+        mynum = random.randint(1, 100)
+        response = render(request, "myapp/about.html", {"mynum": mynum})
+        response.set_cookie("lucky_num", mynum, max_age=5 * 60)  # Expires in 5 minutes
+        return response
+    return render(request, "myapp/about.html", {"mynum": mynum})
 
 
 def getFeedback(request):
@@ -151,6 +166,8 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
+                request.session["last_login"] = str(timezone.now())
+                request.session.set_expiry(3600)  # Session expires in 1 hour
                 return HttpResponseRedirect(reverse("myapp:index"))
             else:
                 return HttpResponse("Your account is disabled.")
@@ -163,7 +180,7 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect(reverse(("myapp:index")))
+    return HttpResponseRedirect(reverse("myapp:index"))
 
 
 @login_required
