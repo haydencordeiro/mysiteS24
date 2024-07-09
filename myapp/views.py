@@ -5,6 +5,11 @@ from myapp.models import Book
 from django.http import HttpResponse
 from .forms import *
 from .models import Book
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 
 
 def index(request):
@@ -136,3 +141,59 @@ def review_view(request):
     else:
         form = ReviewForm()
     return render(request, "myapp/review.html", {"form": form})
+
+
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse("myapp:index"))
+            else:
+                return HttpResponse("Your account is disabled.")
+        else:
+            return HttpResponse("Invalid login details.")
+    else:
+        return render(request, "myapp/login.html")
+
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse(("myapp:index")))
+
+
+@login_required
+def chk_reviews(request, book_id):
+    user = request.user
+    # Check if the user is a member
+    if Member.objects.filter(id=user.id).exists():
+        try:
+            book = Book.objects.get(pk=book_id)
+            reviews = Review.objects.filter(book=book)
+            if reviews.exists():
+                avg_rating = reviews.aggregate(Avg("rating"))["rating__avg"]
+                return render(
+                    request,
+                    "myapp/chk_reviews.html",
+                    {"avg_rating": avg_rating, "book": book},
+                )
+            else:
+                return render(
+                    request,
+                    "myapp/chk_reviews.html",
+                    {"message": "No reviews submitted for this book."},
+                )
+        except Book.DoesNotExist:
+            return render(
+                request, "myapp/chk_reviews.html", {"message": "Book not found."}
+            )
+    else:
+        return render(
+            request,
+            "myapp/chk_reviews.html",
+            {"message": "You are not a registered member!"},
+        )
