@@ -60,7 +60,9 @@ class Order(models.Model):
     member = models.ForeignKey(Member, related_name="orders", on_delete=models.CASCADE)
     order_type = models.IntegerField(choices=ORDER_VALUE_CHOICES, default=1)
     order_date = models.DateField(default=timezone.now)
-
+    def total_items(self):
+        return self.books.count()
+    total_items.short_description = 'Total Books'
 
 class Review(models.Model):
     reviewer = models.EmailField()
